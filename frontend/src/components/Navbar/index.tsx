@@ -29,7 +29,7 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between bg-white px-4 py-3 dark:bg-black">
       {/* Search Bar */}
-      <div className="flex items-center gap-8">
+      {/* <div className="flex items-center gap-8">
         {!isSidebarCollapsed ? null : (
           <button
             onClick={() => dispatch(setIsSidebarCollapsed(!isSidebarCollapsed))}
@@ -45,7 +45,7 @@ const Navbar = () => {
             placeholder="Search..."
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Icons */}
       <div className="flex items-center">
