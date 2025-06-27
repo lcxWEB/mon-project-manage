@@ -31,6 +31,16 @@ const ModalNewProject = ({ isOpen, onClose }: Props) => {
       startDate: formattedStartDate,
       endDate: formattedEndDate,
     });
+
+    // 重置表单字段
+    setProjectName("");
+    setDescription("");
+    setStartDate("");
+    setEndDate("");
+    
+    // 关闭模态框
+    onClose();
+    
   };
 
   const isFormValid = () => {

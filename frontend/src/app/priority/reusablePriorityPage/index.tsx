@@ -78,6 +78,9 @@ const ReusablePriorityPage = ({ priority }: Props) => {
   const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
 
   const { data: currentUser } = useGetAuthUserQuery({});
+  // 添加日志来追踪当前用户信息
+  console.log("ReusablePriorityPage Current user data:", currentUser);
+  
   const userId = currentUser?.userDetails?.userId ?? null;
   const {
     data: tasks,
