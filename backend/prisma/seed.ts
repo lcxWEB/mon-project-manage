@@ -5,24 +5,23 @@ const prisma = new PrismaClient();
 
 async function resetSequences() {
   try {
-    // Models that have ID sequences to reset
+    // Models that have ID sequences to reset with their exact column names
     const models = [
-      "Project",
-      "Team",
-      "ProjectTeam",
-      "User", // Note: User uses userId instead of id
-      "Task",
-      "TaskAssignment",
-      "Attachment",
-      "Comment"
+      { name: "Project", idField: "id" },
+      { name: "Team", idField: "id" },
+      { name: "ProjectTeam", idField: "id" },
+      { name: "User", idField: "userId" }, // Use exact case as defined in schema
+      { name: "Task", idField: "id" },
+      { name: "TaskAssignment", idField: "id" },
+      { name: "Attachment", idField: "id" },
+      { name: "Comment", idField: "id" }
     ];
     
     for (const model of models) {
-      const idField = model === "User" ? "userId" : "id";
       await prisma.$executeRawUnsafe(
-        `SELECT setval(pg_get_serial_sequence('"${model}"', '${idField}'), coalesce(max(${idField})+1, 1), false) FROM "${model}"`
+        `SELECT setval(pg_get_serial_sequence('"${model.name}"', '${model.idField}'), coalesce(max("${model.idField}")+1, 1), false) FROM "${model.name}"`
       );
-      console.log(`Reset sequence for ${model}`);
+      console.log(`Reset sequence for ${model.name}`);
     }
   } catch (error) {
     console.error("Error resetting sequences:", error);
@@ -75,6 +74,7 @@ async function main() {
   ];
 
   await deleteAllData(deleteOrder); // Clear all data first
+  await resetSequences(); // Reset all sequences after deleting data
 
   for (const fileName of createOrder) {
     const filePath = path.join(dataDirectory, fileName);
