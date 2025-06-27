@@ -139,7 +139,10 @@ export const api = createApi({
         method: "POST",
         body: task,
       }),
-      invalidatesTags: ["Tasks"],
+      invalidatesTags: (result) => [
+        { type: "Tasks" as const },
+        ...(result ? [{ type: "Tasks" as const, id: result.id }] : []),
+      ],
     }),
     updateTaskStatus: build.mutation<Task, { taskId: number; status: string }>({
       query: ({ taskId, status }) => ({
