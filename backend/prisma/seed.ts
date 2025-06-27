@@ -3,6 +3,33 @@ import fs from "fs";
 import path from "path";
 const prisma = new PrismaClient();
 
+async function resetSequences() {
+  try {
+    // Models that have ID sequences to reset
+    const models = [
+      "Project",
+      "Team",
+      "ProjectTeam",
+      "User", // Note: User uses userId instead of id
+      "Task",
+      "TaskAssignment",
+      "Attachment",
+      "Comment"
+    ];
+    
+    for (const model of models) {
+      const idField = model === "User" ? "userId" : "id";
+      await prisma.$executeRawUnsafe(
+        `SELECT setval(pg_get_serial_sequence('"${model}"', '${idField}'), coalesce(max(${idField})+1, 1), false) FROM "${model}"`
+      );
+      console.log(`Reset sequence for ${model}`);
+    }
+  } catch (error) {
+    console.error("Error resetting sequences:", error);
+  }
+}
+
+
 async function deleteAllData(orderedFileNames: string[]) {
   const modelNames = orderedFileNames.map((fileName) => {
     const modelName = path.basename(fileName, path.extname(fileName));
@@ -51,6 +78,9 @@ async function main() {
       console.error(`Error seeding data for ${modelName}:`, error);
     }
   }
+
+  await resetSequences(); // Reset all sequences after adding data
+
 }
 
 main()
