@@ -50,8 +50,21 @@ async function deleteAllData(orderedFileNames: string[]) {
 async function main() {
   const dataDirectory = path.join(__dirname, "seedData");
 
-  const orderedFileNames = [
-    "team.json",
+  // Reversed order for deletion - delete dependent tables first
+  const deleteOrder = [
+    "taskAssignment.json",
+    "comment.json",
+    "attachment.json",
+    "task.json",
+    "user.json",
+    "projectTeam.json", // Delete ProjectTeam before Team
+    "project.json",
+    "team.json"
+  ];
+
+  // Order for creating data
+  const createOrder = [
+    "team.json", 
     "project.json",
     "projectTeam.json",
     "user.json",
@@ -61,9 +74,9 @@ async function main() {
     "taskAssignment.json",
   ];
 
-  await deleteAllData(orderedFileNames);
+  await deleteAllData(deleteOrder); // Clear all data first
 
-  for (const fileName of orderedFileNames) {
+  for (const fileName of createOrder) {
     const filePath = path.join(dataDirectory, fileName);
     const jsonData = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     const modelName = path.basename(fileName, path.extname(fileName));
