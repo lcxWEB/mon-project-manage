@@ -14,6 +14,18 @@ Amplify.configure({
 });
 
 const formFields = {
+  signIn: {
+    username: {
+      placeholder: "Enter your username",
+      label: "Username",
+      inputProps: { required: true, autoComplete: "username" },
+    },
+    password: {
+      placeholder: "Enter your password",
+      label: "Password",
+      inputProps: { required: true, autoComplete: "current-password" },
+    },
+  },
   signUp: {
     username: {
       order: 1,
@@ -42,10 +54,13 @@ const formFields = {
   },
 };
 
+
 const AuthProvider = ({ children }: any) => {
   return (
     <div>
-      <Authenticator formFields={formFields}>
+      <Authenticator formFields={formFields}
+        initialState="signIn"
+      >
         {({ user }: any) =>
           user ? (
             <div>{children}</div>
