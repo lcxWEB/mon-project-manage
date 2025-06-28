@@ -1,5 +1,8 @@
 # Project Management Dashboard
 
+### https://main.dsw2l800pwpp5.amplifyapp.com/
+Test account (Username: admin, Password: admin!Q123)
+
 ## Technology Stack
 
 - **Frontend**: Next.js, Tailwind CSS, Redux Toolkit, Redux Toolkit Query, Material UI Data Grid
@@ -12,7 +15,6 @@
 - Secure user authentication powered by AWS Cognito
 - User registration and login functionality
 - Role-based access control for different permission levels
-- Test account available (Username: admin, Password: admin!Q123)
 ### Project Management
 - Create and manage projects with name, description, start and end dates
 - View comprehensive project listings and detailed information
